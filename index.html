@@ -1,427 +1,490 @@
-julian-graham/
-├── index.html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Julian Graham</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Julian Graham</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#050505;
+  color:white;
+  overflow-x:hidden;
+  transition:.4s;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:50px 50px;
+  animation:grid 20s linear infinite;
+}
+
+@keyframes grid{
+  to{transform:translateY(50px)}
+}
+
+header{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:18px 7%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(5,5,5,.7);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid #222;
+  z-index:1000;
+}
+
+.logo{
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:4px;
+}
+
+nav{
+  display:flex;
+  gap:28px;
+}
+
+nav a{
+  color:white;
+  text-decoration:none;
+  transition:.3s;
+}
+
+nav a:hover{
+  opacity:.5;
+}
+
+#themeButton{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid #444;
+  background:#111;
+  color:white;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.hero{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:100px 20px;
+}
+
+.welcome{
+  letter-spacing:6px;
+  opacity:.5;
+  margin-bottom:25px;
+}
+
+h1{
+  font-size:clamp(50px,9vw,110px);
+  margin-bottom:25px;
+}
+
+h1 span{
+  background:linear-gradient(90deg,#fff,#777,#fff);
+  background-size:200%;
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:shine 4s linear infinite;
+}
+
+@keyframes shine{
+  to{background-position:200%}
+}
+
+.subtitle{
+  font-size:20px;
+  opacity:.6;
+  line-height:1.7;
+}
+
+.main-button{
+  margin-top:35px;
+  padding:16px 28px;
+  border:1px solid white;
+  border-radius:50px;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.main-button:hover{
+  background:white;
+  color:black;
+  transform:scale(1.08);
+}
+
+.section{
+  min-height:70vh;
+  padding:130px 8%;
+  text-align:center;
+}
+
+.section-label{
+  font-size:12px;
+  letter-spacing:5px;
+  opacity:.4;
+  margin-bottom:20px;
+}
+
+h2{
+  font-size:clamp(40px,6vw,65px);
+  margin-bottom:35px;
+}
+
+.about-text{
+  max-width:750px;
+  margin:auto;
+  font-size:18px;
+  line-height:2;
+  opacity:.65;
+}
+
+.cards{
+  max-width:1100px;
+  margin:50px auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:25px;
+}
+
+.card{
+  padding:40px 30px;
+  border:1px solid #222;
+  background:#0d0d0d;
+  border-radius:25px;
+  transition:.4s;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+  border-color:#777;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+.card-icon{
+  font-size:40px;
+  margin-bottom:20px;
+}
+
+.card h3{
+  font-size:24px;
+  margin-bottom:15px;
+}
+
+.card p{
+  line-height:1.7;
+  opacity:.55;
+}
+
+.music-list{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:15px;
+}
+
+.music-list button{
+  padding:17px 25px;
+  border:1px solid #333;
+  border-radius:15px;
+  background:#111;
+  color:white;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.music-list button:hover{
+  transform:translateY(-5px);
+  border-color:white;
+}
+
+.reveal{
+  opacity:0;
+  transform:translateY(50px);
+  transition:.8s;
+}
+
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+footer{
+  text-align:center;
+  padding:70px 20px;
+  border-top:1px solid #222;
+  opacity:.6;
+}
+
+#cursorGlow{
+  position:fixed;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);
+  transform:translate(-50%,-50%);
+  z-index:999;
+}
+
+body.light{
+  background:#f5f5f5;
+  color:#111;
+}
+
+body.light header{
+  background:rgba(245,245,245,.75);
+  border-color:#ddd;
+}
+
+body.light nav a{
+  color:#111;
+}
+
+body.light #themeButton{
+  background:white;
+  color:#111;
+  border-color:#ccc;
+}
+
+body.light .card{
+  background:white;
+  border-color:#ddd;
+}
+
+body.light .music-list button{
+  background:white;
+  color:#111;
+  border-color:#ddd;
+}
+
+body.light .main-button{
+  color:#111;
+  border-color:#111;
+}
+
+body.light .main-button:hover{
+  background:#111;
+  color:white;
+}
+
+@media(max-width:750px){
+
+  nav{
+    display:none;
+  }
+
+  .hero h1{
+    font-size:50px;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .section{
+    padding:100px 6%;
+  }
+
+  #cursorGlow{
+    display:none;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div id="cursorGlow"></div>
+<header>
+  <div class="logo">JG</div>
 
-  <header>
-    <div class="logo">JG</div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#music">Music</a>
+  </nav>
 
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#music">Music</a>
-    </nav>
+  <button id="themeButton">🌙</button>
+</header>
 
-    <button id="themeButton">🌙</button>
-  </header>
+<section id="home" class="hero">
+  <div>
+    <p class="welcome">WELCOME TO MY WEBSITE</p>
 
-  <main>
+    <h1>I'm <span>Julian Graham</span></h1>
 
-    <section id="home" class="hero">
-      <p class="small-text">WELCOME TO MY WEBSITE</p>
+    <p class="subtitle">
+      I love coding, making websites, and creating cool things.
+    </p>
 
-      <h1>I'm <span>Julian Graham</span></h1>
+    <button class="main-button" onclick="showMessage()">
+      Explore My Site →
+    </button>
+  </div>
+</section>
 
-      <p class="description">
-        I love coding, making websites, and creating cool things.
-      </p>
+<section id="about" class="section reveal">
+  <p class="section-label">01 — ABOUT</p>
 
-      <button class="coolButton" onclick="showMessage()">
-        Explore My Site →
-      </button>
-    </section>
+  <h2>About Me</h2>
 
-    <section id="about" class="section reveal">
-      <h2>About Me</h2>
+  <p class="about-text">
+    I started getting inspired by coding and making games when I was
+    in third grade. Later, I took a coding class in sixth grade.
+    Now I enjoy making websites in my free time.
+  </p>
+</section>
 
-      <p>
-        I started getting inspired by coding and making games when I was
-        in third grade. Later, I took a coding class in sixth grade.
-        Now I enjoy making websites in my free time.
-      </p>
-    </section>
+<section id="projects" class="section reveal">
+  <p class="section-label">02 — PROJECTS</p>
 
-    <section id="projects" class="section reveal">
-      <h2>My Projects</h2>
+  <h2>My Projects</h2>
 
-      <div class="cards">
-        <div class="card">
-          <h3>🌐 Websites</h3>
-          <p>Creating websites and experimenting with new designs.</p>
-        </div>
+  <div class="cards">
 
-        <div class="card">
-          <h3>🎮 Games</h3>
-          <p>Inspired by making games since third grade.</p>
-        </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <h3>Websites</h3>
+      <p>Creating websites and experimenting with new designs.</p>
+    </div>
 
-        <div class="card">
-          <h3>💻 Coding</h3>
-          <p>Learning new coding skills and building new projects.</p>
-        </div>
-      </div>
-    </section>
+    <div class="card">
+      <div class="card-icon">🎮</div>
+      <h3>Games</h3>
+      <p>Inspired by making games since third grade.</p>
+    </div>
 
-    <section id="music" class="section reveal">
-      <h2>My Music</h2>
+    <div class="card">
+      <div class="card-icon">💻</div>
+      <h3>Coding</h3>
+      <p>Learning new coding skills and building new projects.</p>
+    </div>
 
-      <div class="music-list">
-        <button onclick="openMusic('Q50')">🎵 Q50</button>
-        <button onclick="openMusic('Sweater Wetter')">🎵 Sweater Wetter</button>
-        <button onclick="openMusic('Gelato Mad 2 Hottie')">🎵 Gelato</button>
-        <button onclick="openMusic('Dirty Shoes Harper Woodski')">
-          🎵 Dirty Shoes
-        </button>
-      </div>
-    </section>
+  </div>
+</section>
 
-  </main>
+<section id="music" class="section reveal">
+  <p class="section-label">03 — MUSIC</p>
 
-  <footer>
-    © <span id="year"></span> Julian Graham
-  </footer>
+  <h2>My Music</h2>
 
-  <script src="script.js"></script>
-</body>
-</html>
-├── style.css* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  <div class="music-list">
 
-html {
-  scroll-behavior: smooth;
-}
+    <button onclick="openMusic('Q50')">🎵 Q50</button>
 
-body {
-  font-family: Arial, sans-serif;
-  background: #080808;
-  color: white;
-  transition: 0.3s;
-  overflow-x: hidden;
-}
+    <button onclick="openMusic('Sweater Wetter')">
+      🎵 Sweater Wetter
+    </button>
 
-header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  padding: 18px 7%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(8, 8, 8, 0.75);
-  backdrop-filter: blur(15px);
-  z-index: 1000;
-}
+    <button onclick="openMusic('Gelato Mad 2 Hottie')">
+      🎵 Gelato
+    </button>
 
-.logo {
-  font-size: 28px;
-  font-weight: bold;
-  letter-spacing: 3px;
-}
+    <button onclick="openMusic('Dirty Shoes Harper Woodski')">
+      🎵 Dirty Shoes
+    </button>
 
-nav {
-  display: flex;
-  gap: 25px;
-}
+  </div>
+</section>
 
-nav a {
-  color: white;
-  text-decoration: none;
-  transition: 0.3s;
-}
+<footer>
+  <h2>JG</h2>
+  <p>© <span id="year"></span> Julian Graham</p>
+</footer>
 
-nav a:hover {
-  transform: translateY(-3px);
-  opacity: 0.6;
-}
-
-#themeButton {
-  border: none;
-  background: transparent;
-  color: white;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 100px 20px;
-  background:
-    radial-gradient(circle at center, #202020, #080808 60%);
-}
-
-.small-text {
-  letter-spacing: 5px;
-  opacity: 0.6;
-  margin-bottom: 20px;
-}
-
-h1 {
-  font-size: clamp(45px, 8vw, 90px);
-  margin-bottom: 20px;
-}
-
-h1 span {
-  background: linear-gradient(90deg, #fff, #777, #fff);
-  background-size: 200%;
-  -webkit-background-clip: text;
-  color: transparent;
-  animation: shine 4s linear infinite;
-}
-
-@keyframes shine {
-  to {
-    background-position: 200%;
-  }
-}
-
-.description {
-  font-size: 20px;
-  opacity: 0.7;
-  max-width: 600px;
-}
-
-.coolButton {
-  margin-top: 35px;
-  padding: 15px 25px;
-  border: 1px solid white;
-  border-radius: 30px;
-  background: transparent;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.coolButton:hover {
-  background: white;
-  color: black;
-  transform: scale(1.08);
-}
-
-.section {
-  min-height: 70vh;
-  padding: 120px 8%;
-  text-align: center;
-}
-
-.section h2 {
-  font-size: 45px;
-  margin-bottom: 30px;
-}
-
-.section > p {
-  max-width: 700px;
-  margin: auto;
-  line-height: 1.8;
-  opacity: 0.75;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
-  max-width: 1000px;
-  margin: 50px auto;
-}
-
-.card {
-  padding: 35px;
-  border: 1px solid #333;
-  border-radius: 20px;
-  background: #111;
-  transition: 0.4s;
-}
-
-.card:hover {
-  transform: translateY(-10px);
-  border-color: white;
-}
-
-.card h3 {
-  margin-bottom: 15px;
-}
-
-.card p {
-  opacity: 0.65;
-  line-height: 1.6;
-}
-
-.music-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-}
-
-.music-list button {
-  padding: 15px 22px;
-  border: 1px solid #444;
-  border-radius: 15px;
-  background: #111;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.music-list button:hover {
-  transform: scale(1.05);
-  border-color: white;
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: 0.8s;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-footer {
-  text-align: center;
-  padding: 40px;
-  opacity: 0.5;
-}
-
-#cursorGlow {
-  position: fixed;
-  width: 250px;
-  height: 250px;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
-  transform: translate(-50%, -50%);
-  z-index: 999;
-}
-
-body.light {
-  background: #f5f5f5;
-  color: #111;
-}
-
-body.light header {
-  background: rgba(245,245,245,0.8);
-}
-
-body.light nav a,
-body.light #themeButton,
-body.light .coolButton,
-body.light .music-list button {
-  color: #111;
-}
-
-body.light .card,
-body.light .music-list button {
-  background: white;
-  border-color: #ddd;
-}
-
-body.light .coolButton:hover {
-  background: #111;
-  color: white;
-}
-
-@media (max-width: 700px) {
-
-  header {
-    padding: 15px 5%;
-  }
-
-  nav {
-    gap: 12px;
-    font-size: 13px;
-  }
-
-  .cards {
-    grid-template-columns: 1fr;
-  }
-
-  .section {
-    padding: 100px 6%;
-  }
-
-  #cursorGlow {
-    display: none;
-  }
-}
-└── script.js// Dark / Light Mode
+<script>
 const themeButton = document.getElementById("themeButton");
 
-themeButton.addEventListener("click", () => {
+themeButton.onclick = function(){
+
   document.body.classList.toggle("light");
 
-  if (document.body.classList.contains("light")) {
+  if(document.body.classList.contains("light")){
     themeButton.textContent = "☀️";
-    localStorage.setItem("theme", "light");
-  } else {
+    localStorage.setItem("theme","light");
+  }else{
     themeButton.textContent = "🌙";
-    localStorage.setItem("theme", "dark");
+    localStorage.setItem("theme","dark");
   }
-});
 
-// Remember theme
-if (localStorage.getItem("theme") === "light") {
+};
+
+if(localStorage.getItem("theme") === "light"){
   document.body.classList.add("light");
   themeButton.textContent = "☀️";
 }
 
-// Button message
-function showMessage() {
+function showMessage(){
   alert("Welcome to Julian Graham's website! 🚀");
 }
 
-// Music search
-function openMusic(song) {
-  const url =
+function openMusic(song){
+  window.open(
     "https://www.youtube.com/results?search_query=" +
-    encodeURIComponent(song);
-
-  window.open(url, "_blank");
+    encodeURIComponent(song),
+    "_blank"
+  );
 }
 
-// Scroll animations
-const revealElements = document.querySelectorAll(".reveal");
+const sections = document.querySelectorAll(".reveal");
 
-function revealOnScroll() {
-  revealElements.forEach((element) => {
-    const position = element.getBoundingClientRect().top;
+function reveal(){
 
-    if (position < window.innerHeight - 100) {
-      element.classList.add("visible");
+  sections.forEach(section => {
+
+    if(section.getBoundingClientRect().top < window.innerHeight - 100){
+      section.classList.add("visible");
     }
+
   });
+
 }
 
-window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("scroll",reveal);
 
-revealOnScroll();
+reveal();
 
-// Current year
-document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent =
+  new Date().getFullYear();
 
-// Mouse glow
-const cursorGlow = document.getElementById("cursorGlow");
+const glow = document.getElementById("cursorGlow");
 
-document.addEventListener("mousemove", (event) => {
-  cursorGlow.style.left = event.clientX + "px";
-  cursorGlow.style.top = event.clientY + "px";
+document.addEventListener("mousemove",e => {
+
+  glow.style.left = e.clientX + "px";
+  glow.style.top = e.clientY + "px";
+
 });
+</script>
+
+</body>
+</html>
