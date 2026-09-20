@@ -17,41 +17,66 @@ html{
 }
 
 body{
-  font-family:Arial,sans-serif;
   background:#050505;
-  color:white;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
   overflow-x:hidden;
-  transition:.4s;
+  cursor:none;
 }
 
-/* ANIMATED GRID */
-body:before{
+/* =========================
+   BACKGROUND
+========================= */
+
+body::before{
   content:"";
   position:fixed;
   inset:0;
-  z-index:-2;
+  z-index:-5;
   background:
-    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
-  background-size:50px 50px;
-  animation:grid 20s linear infinite;
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:45px 45px;
+  animation:gridMove 18s linear infinite;
 }
 
-@keyframes grid{
-  to{transform:translateY(50px)}
-}
-
-/* RAINBOW CURSOR */
-body:after{
+body::after{
   content:"";
   position:fixed;
-  width:28px;
-  height:28px;
+  width:700px;
+  height:700px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(
+    circle,
+    rgba(100,100,255,.10),
+    transparent 65%
+  );
+  z-index:-4;
+  pointer-events:none;
+}
+
+@keyframes gridMove{
+  from{
+    transform:translateY(0);
+  }
+  to{
+    transform:translateY(45px);
+  }
+}
+
+/* =========================
+   RAINBOW CURSOR
+========================= */
+
+.cursor{
+  position:fixed;
+  width:20px;
+  height:20px;
   border-radius:50%;
   pointer-events:none;
-  z-index:9999;
-  left:var(--mouse-x,-100px);
-  top:var(--mouse-y,-100px);
+  z-index:99999;
   transform:translate(-50%,-50%);
   background:linear-gradient(
     45deg,
@@ -61,595 +86,963 @@ body:after{
     lime,
     cyan,
     blue,
-    violet,
+    purple,
     red
   );
   background-size:400%;
-  animation:rainbowCursor 2s linear infinite;
+  animation:rainbow 2s linear infinite;
   box-shadow:
-    0 0 10px #ff00ff,
-    0 0 20px #00ffff,
-    0 0 30px #ffff00;
-  transition:
-    left .08s ease-out,
-    top .08s ease-out;
+    0 0 10px #fff,
+    0 0 25px #00ffff,
+    0 0 40px #ff00ff;
 }
 
-@keyframes rainbowCursor{
-  0%{background-position:0% 50%}
-  100%{background-position:400% 50%}
+.cursor-trail{
+  position:fixed;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:99998;
+  transform:translate(-50%,-50%);
+  background:linear-gradient(
+    45deg,
+    red,
+    yellow,
+    cyan,
+    blue,
+    magenta
+  );
+  background-size:300%;
+  animation:trailFade .6s forwards;
 }
 
-/* HEADER */
-header{
+@keyframes rainbow{
+  to{
+    background-position:400%;
+  }
+}
+
+@keyframes trailFade{
+  0%{
+    opacity:.9;
+    transform:translate(-50%,-50%) scale(1);
+  }
+  100%{
+    opacity:0;
+    transform:translate(-50%,-50%) scale(0);
+  }
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar{
   position:fixed;
   top:0;
+  left:0;
   width:100%;
-  padding:18px 7%;
+  height:76px;
+  padding:0 45px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:rgba(5,5,5,.7);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid #222;
+  background:rgba(5,5,5,.78);
+  backdrop-filter:blur(25px);
+  border-bottom:1px solid #202020;
   z-index:1000;
 }
 
 .logo{
-  font-size:28px;
+  font-size:26px;
   font-weight:900;
-  letter-spacing:4px;
+  letter-spacing:5px;
 }
 
-nav{
+.logo span{
+  color:#777;
+}
+
+.nav{
   display:flex;
-  gap:28px;
+  gap:30px;
 }
 
-nav a{
-  color:white;
+.nav a{
+  color:#aaa;
   text-decoration:none;
+  font-size:14px;
   transition:.3s;
 }
 
-nav a:hover{
-  opacity:.5;
+.nav a:hover{
+  color:#fff;
+  transform:translateY(-2px);
 }
 
-#themeButton{
+.mode{
+  border:1px solid #333;
+  background:#111;
+  color:#fff;
   width:42px;
   height:42px;
   border-radius:50%;
-  border:1px solid #444;
-  background:#111;
-  color:white;
-  cursor:pointer;
-  font-size:18px;
+  cursor:none;
 }
 
-/* HERO */
+/* =========================
+   MAIN
+========================= */
+
+main{
+  width:1200px;
+  max-width:calc(100% - 100px);
+  margin:auto;
+  padding-top:130px;
+}
+
+/* =========================
+   HERO
+========================= */
+
 .hero{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
+  min-height:720px;
+  display:grid;
+  grid-template-columns:1.5fr .8fr;
+  gap:50px;
   align-items:center;
-  text-align:center;
-  padding:100px 20px;
 }
 
-.welcome{
+.hero-small{
+  color:#777;
   letter-spacing:6px;
-  opacity:.5;
+  font-size:12px;
   margin-bottom:25px;
 }
 
-h1{
-  font-size:clamp(50px,9vw,110px);
-  margin-bottom:25px;
+.hero h1{
+  font-size:100px;
+  line-height:.9;
+  letter-spacing:-6px;
 }
 
-h1 span{
+.hero h1 span{
+  display:block;
   background:linear-gradient(
     90deg,
-    #ff0000,
-    #ff9900,
-    #ffff00,
-    #00ff66,
-    #00ffff,
-    #0088ff,
-    #aa00ff,
-    #ff00aa,
-    #ff0000
+    #fff,
+    #777,
+    #fff
   );
-  background-size:400%;
+  background-size:200%;
   -webkit-background-clip:text;
   color:transparent;
-  animation:rainbowText 6s linear infinite;
+  animation:shine 4s linear infinite;
 }
 
-@keyframes rainbowText{
-  to{background-position:400%}
+@keyframes shine{
+  to{
+    background-position:200%;
+  }
 }
 
-.subtitle{
-  font-size:20px;
-  opacity:.6;
-  line-height:1.7;
-}
-
-.main-button{
+.hero-text{
   margin-top:35px;
-  padding:16px 28px;
-  border:1px solid white;
-  border-radius:50px;
-  background:transparent;
-  color:white;
-  cursor:pointer;
-  transition:.3s;
+  color:#777;
+  font-size:19px;
+  line-height:1.8;
+  max-width:650px;
 }
 
-.main-button:hover{
-  background:white;
-  color:black;
-  transform:scale(1.08);
-}
-
-/* SECTIONS */
-.section{
-  min-height:70vh;
-  padding:130px 8%;
-  text-align:center;
-}
-
-.section-label{
-  font-size:12px;
-  letter-spacing:5px;
-  opacity:.4;
-  margin-bottom:20px;
-}
-
-h2{
-  font-size:clamp(40px,6vw,65px);
-  margin-bottom:35px;
-}
-
-.about-text{
-  max-width:800px;
-  margin:auto;
-  font-size:18px;
-  line-height:2;
-  opacity:.65;
-}
-
-/* CARDS */
-.cards{
-  max-width:1100px;
-  margin:50px auto;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:25px;
-}
-
-.card{
-  padding:40px 30px;
-  border:1px solid #222;
-  background:#0d0d0d;
-  border-radius:25px;
-  transition:.4s;
-}
-
-.card:hover{
-  transform:translateY(-10px);
-  border-color:#777;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
-}
-
-.card-icon{
-  font-size:40px;
-  margin-bottom:20px;
-}
-
-.card h3{
-  font-size:24px;
-  margin-bottom:15px;
-}
-
-.card p{
-  line-height:1.7;
-  opacity:.55;
-}
-
-/* MUSIC */
-.music-list{
+.hero-buttons{
+  margin-top:35px;
   display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
   gap:15px;
 }
 
-.music-list button{
-  padding:17px 25px;
+.button{
+  padding:15px 24px;
+  border-radius:12px;
+  text-decoration:none;
   border:1px solid #333;
-  border-radius:15px;
+  color:#fff;
   background:#111;
-  color:white;
-  cursor:pointer;
   transition:.3s;
 }
 
-.music-list button:hover{
-  transform:translateY(-5px) scale(1.03);
-  border-color:white;
+.button:hover{
+  transform:translateY(-5px);
+  border-color:#fff;
+  box-shadow:0 15px 40px rgba(255,255,255,.08);
 }
 
-/* YOUTUBE */
-.youtube-box{
-  max-width:700px;
-  margin:50px auto;
-  padding:45px 30px;
+.button.primary{
+  background:#fff;
+  color:#000;
+}
+
+/* HERO CARD */
+
+.hero-card{
+  height:450px;
   border:1px solid #222;
-  background:#0d0d0d;
-  border-radius:30px;
-  transition:.4s;
+  border-radius:35px;
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(255,255,255,.13),
+      transparent 35%
+    ),
+    #0c0c0c;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
 }
 
-.youtube-box:hover{
-  transform:translateY(-8px);
-  box-shadow:0 20px 70px rgba(255,0,0,.15);
+.hero-card::before{
+  content:"";
+  position:absolute;
+  width:260px;
+  height:260px;
+  border:1px solid #444;
+  border-radius:50%;
+  animation:spin 12s linear infinite;
 }
 
-.youtube-icon{
-  font-size:60px;
-  margin-bottom:20px;
+.hero-card::after{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  border:1px solid #333;
+  border-radius:50%;
+  animation:spin 8s linear infinite reverse;
 }
 
-.youtube-box h3{
-  font-size:30px;
-  margin-bottom:15px;
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
 }
 
-.youtube-box p{
-  opacity:.6;
+.big-jg{
+  font-size:110px;
+  font-weight:900;
+  z-index:2;
+  letter-spacing:-10px;
+}
+
+.hero-card p{
+  color:#777;
+  z-index:2;
+  margin-top:15px;
+}
+
+/* =========================
+   SECTION
+========================= */
+
+.section{
+  padding:130px 0;
+  border-top:1px solid #181818;
+}
+
+.label{
+  color:#555;
+  letter-spacing:5px;
+  font-size:11px;
+  margin-bottom:18px;
+}
+
+.section h2{
+  font-size:65px;
+  letter-spacing:-3px;
+  margin-bottom:40px;
+}
+
+/* =========================
+   ABOUT
+========================= */
+
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+}
+
+.about-main{
+  font-size:22px;
+  line-height:1.8;
+  color:#aaa;
+}
+
+.about-main strong{
+  color:#fff;
+}
+
+.timeline{
+  border-left:1px solid #333;
+  padding-left:30px;
+}
+
+.timeline-item{
+  margin-bottom:35px;
+}
+
+.timeline-item span{
+  color:#555;
+  font-size:12px;
+  letter-spacing:3px;
+}
+
+.timeline-item h3{
+  margin:8px 0;
+  font-size:23px;
+}
+
+.timeline-item p{
+  color:#777;
   line-height:1.7;
+}
+
+/* =========================
+   PROJECTS
+========================= */
+
+.projects{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.project{
+  min-height:270px;
+  padding:30px;
+  border:1px solid #222;
+  border-radius:25px;
+  background:#0b0b0b;
+  transition:.4s;
+  position:relative;
+  overflow:hidden;
+}
+
+.project:hover{
+  transform:translateY(-10px);
+  border-color:#555;
+}
+
+.project-number{
+  color:#444;
+  font-size:13px;
+}
+
+.project-icon{
+  font-size:42px;
+  margin:35px 0 20px;
+}
+
+.project h3{
+  font-size:25px;
+  margin-bottom:12px;
+}
+
+.project p{
+  color:#666;
+  line-height:1.7;
+}
+
+/* =========================
+   YOUTUBE
+========================= */
+
+.youtube{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+
+.youtube-main{
+  min-height:400px;
+  padding:45px;
+  border-radius:30px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,0,0,.16),
+      transparent
+    ),
+    #0b0b0b;
+  border:1px solid #292929;
+}
+
+.youtube-logo{
+  font-size:70px;
   margin-bottom:25px;
 }
 
-.youtube-button{
+.youtube-main h3{
+  font-size:42px;
+  margin-bottom:20px;
+}
+
+.youtube-main p{
+  color:#777;
+  line-height:1.8;
+  max-width:500px;
+}
+
+.youtube-link{
   display:inline-block;
-  padding:15px 25px;
-  border-radius:50px;
+  margin-top:30px;
   background:#ff0000;
-  color:white;
+  color:#fff;
+  padding:16px 28px;
+  border-radius:12px;
   text-decoration:none;
   font-weight:bold;
   transition:.3s;
 }
 
-.youtube-button:hover{
-  transform:scale(1.08);
-  box-shadow:0 0 30px rgba(255,0,0,.5);
+.youtube-link:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 35px rgba(255,0,0,.35);
 }
 
-/* BIRTHDAY */
-.birthday-card{
-  max-width:850px;
-  margin:50px auto;
-  padding:40px;
+.youtube-side{
+  border:1px solid #222;
   border-radius:30px;
-  border:1px solid #333;
-  position:relative;
+  padding:40px;
+  background:#0b0b0b;
+}
+
+.youtube-side h3{
+  font-size:25px;
+  margin-bottom:20px;
+}
+
+.youtube-side p{
+  color:#666;
+  line-height:1.8;
+}
+
+/* =========================
+   BIRTHDAY
+========================= */
+
+.birthday{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+
+.calendar{
+  border:1px solid #292929;
+  border-radius:30px;
   overflow:hidden;
+  background:#0b0b0b;
+}
+
+.calendar-top{
+  height:240px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
   background:
     linear-gradient(
-      rgba(0,0,0,.5),
-      rgba(0,0,0,.75)
+      rgba(0,0,0,.45),
+      rgba(0,0,0,.65)
     ),
     url("https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif");
   background-size:cover;
   background-position:center;
 }
 
-.birthday-card:before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.2);
-  z-index:0;
+.calendar-top h3{
+  font-size:42px;
 }
 
-.birthday-content{
-  position:relative;
-  z-index:1;
+.calendar-body{
+  padding:35px;
 }
 
-.birthday-content h3{
-  font-size:45px;
-  margin-bottom:15px;
+.calendar-month{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:25px;
+  color:#888;
 }
 
-.birthday-date{
-  font-size:28px;
+.calendar-days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:10px;
+  text-align:center;
+}
+
+.calendar-days div{
+  padding:12px;
+  color:#666;
+}
+
+.calendar-days .birthday-day{
+  background:linear-gradient(
+    135deg,
+    #ff0080,
+    #7b2cff,
+    #00d4ff
+  );
+  color:#fff;
+  border-radius:12px;
   font-weight:bold;
-  margin:15px 0;
+  box-shadow:0 0 25px rgba(150,0,255,.3);
 }
 
-.age{
-  font-size:22px;
-  opacity:.8;
-}
-
-/* WEATHER */
-.weather-card{
-  max-width:700px;
-  margin:50px auto;
-  padding:40px;
-  background:#0d0d0d;
+.birthday-info{
   border:1px solid #222;
   border-radius:30px;
+  background:#0b0b0b;
+  padding:45px;
+}
+
+.birthday-info h3{
+  font-size:45px;
+  margin-bottom:20px;
+}
+
+.birthday-info p{
+  color:#777;
+  line-height:1.9;
+  font-size:18px;
+}
+
+.age-number{
+  font-size:100px;
+  font-weight:900;
+  margin:30px 0;
+  background:linear-gradient(
+    90deg,
+    #ff0080,
+    #7b2cff,
+    #00d4ff
+  );
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+/* =========================
+   WEATHER
+========================= */
+
+.weather{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+
+.weather-card{
+  border:1px solid #222;
+  border-radius:30px;
+  padding:45px;
+  background:#0b0b0b;
 }
 
 .weather-icon{
-  font-size:70px;
-  margin-bottom:15px;
+  font-size:80px;
 }
 
-.temperature{
-  font-size:70px;
-  font-weight:bold;
+.weather-temp{
+  font-size:90px;
+  font-weight:900;
   margin:15px 0;
 }
 
-.weather-card p{
-  opacity:.6;
-  margin:8px;
+.weather-location{
+  font-size:25px;
 }
 
-.weather-button{
-  margin-top:25px;
-  padding:14px 22px;
-  border:1px solid white;
-  background:transparent;
-  color:white;
-  border-radius:50px;
-  cursor:pointer;
+.weather-description{
+  color:#777;
+  margin-top:12px;
+}
+
+.weather-details{
+  margin-top:35px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.weather-detail{
+  padding:20px;
+  background:#111;
+  border-radius:15px;
+  color:#888;
+}
+
+.weather-side{
+  border:1px solid #222;
+  border-radius:30px;
+  padding:45px;
+  background:#0b0b0b;
+}
+
+.weather-side h3{
+  font-size:35px;
+  margin-bottom:20px;
+}
+
+.weather-side p{
+  color:#777;
+  line-height:1.8;
+}
+
+/* =========================
+   MUSIC
+========================= */
+
+.music{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.song{
+  border:1px solid #292929;
+  background:#0b0b0b;
+  color:#fff;
+  padding:20px 25px;
+  border-radius:18px;
+  cursor:none;
   transition:.3s;
 }
 
-.weather-button:hover{
-  background:white;
-  color:black;
+.song:hover{
+  transform:translateY(-7px);
+  border-color:#777;
 }
 
-/* REVEAL */
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+  border-top:1px solid #181818;
+  padding:70px 0;
+  text-align:center;
+  color:#555;
+}
+
+footer strong{
+  color:#fff;
+  font-size:25px;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
 .reveal{
   opacity:0;
   transform:translateY(50px);
-  transition:.8s;
+  transition:1s ease;
 }
 
-.reveal.visible{
+.reveal.show{
   opacity:1;
   transform:translateY(0);
 }
 
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:70px 20px;
-  border-top:1px solid #222;
-  opacity:.6;
-}
+/* =========================
+   DESKTOP ONLY
+========================= */
 
-/* LIGHT MODE */
-body.light{
-  background:#f5f5f5;
-  color:#111;
-}
+@media(max-width:900px){
 
-body.light header{
-  background:rgba(245,245,245,.75);
-  border-color:#ddd;
-}
-
-body.light nav a{
-  color:#111;
-}
-
-body.light #themeButton{
-  background:white;
-  color:#111;
-  border-color:#ccc;
-}
-
-body.light .card,
-body.light .youtube-box,
-body.light .weather-card{
-  background:white;
-  border-color:#ddd;
-}
-
-body.light .music-list button{
-  background:white;
-  color:#111;
-  border-color:#ddd;
-}
-
-body.light .main-button{
-  color:#111;
-  border-color:#111;
-}
-
-body.light .main-button:hover{
-  background:#111;
-  color:white;
-}
-
-body.light .weather-button{
-  color:#111;
-  border-color:#111;
-}
-
-body.light .weather-button:hover{
-  background:#111;
-  color:white;
-}
-
-/* MOBILE */
-@media(max-width:750px){
-
-  nav{
-    display:none;
+  body{
+    min-width:1200px;
   }
 
-  .hero h1{
-    font-size:50px;
+  .topbar{
+    min-width:1200px;
   }
 
-  .cards{
-    grid-template-columns:1fr;
+  main{
+    min-width:1100px;
   }
 
-  .section{
-    padding:100px 6%;
-  }
-
-  body:after{
-    display:none;
-  }
-
-  .birthday-card{
-    padding:30px 20px;
-  }
-
-  .birthday-content h3{
-    font-size:35px;
-  }
-
-  .temperature{
-    font-size:55px;
-  }
 }
 </style>
 </head>
 
 <body>
 
-<header>
+<div class="cursor" id="cursor"></div>
 
-  <div class="logo">JG</div>
+<header class="topbar">
 
-  <nav>
+  <div class="logo">
+    JG<span>.</span>
+  </div>
+
+  <nav class="nav">
     <a href="#home">Home</a>
     <a href="#about">About</a>
     <a href="#projects">Projects</a>
-    <a href="#music">Music</a>
     <a href="#youtube">YouTube</a>
     <a href="#birthday">Birthday</a>
     <a href="#weather">Weather</a>
+    <a href="#music">Music</a>
   </nav>
 
-  <button id="themeButton">🌙</button>
+  <button class="mode" id="mode">
+    🌙
+  </button>
 
 </header>
 
 
-<!-- HOME -->
+<main>
+
+<!-- =========================
+     HERO
+========================= -->
+
 <section id="home" class="hero">
 
   <div>
 
-    <p class="welcome">WELCOME TO MY WEBSITE</p>
+    <div class="hero-small">
+      WELCOME TO MY DIGITAL WORLD
+    </div>
 
-    <h1>I'm <span>Julian Graham</span></h1>
+    <h1>
+      JULIAN
+      <span>GRAHAM</span>
+    </h1>
 
-    <p class="subtitle">
-      I love coding, making websites, and creating cool things.
+    <p class="hero-text">
+      I make websites, experiment with code,
+      build projects, and create things just
+      because I think they're cool.
     </p>
 
-    <button class="main-button" onclick="showMessage()">
-      Explore My Site →
-    </button>
+    <div class="hero-buttons">
+
+      <a class="button primary" href="#projects">
+        Explore Projects
+      </a>
+
+      <a class="button" href="#youtube">
+        YouTube →
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <div class="hero-card">
+
+    <div class="big-jg">
+      JG
+    </div>
+
+    <p>
+      CODER • CREATOR • BUILDER
+    </p>
 
   </div>
 
 </section>
 
 
-<!-- ABOUT -->
+<!-- =========================
+     ABOUT
+========================= -->
+
 <section id="about" class="section reveal">
 
-  <p class="section-label">01 — ABOUT</p>
+  <div class="label">
+    01 — ABOUT ME
+  </div>
 
-  <h2>About Me</h2>
+  <h2>
+    How I Got Into Coding
+  </h2>
 
-  <p class="about-text">
+  <div class="about-grid">
 
-    When I was nine years old, I grew up around coding.
-    I started learning about Roblox game development,
-    but I didn't know how to code yet.
+    <div class="about-main">
 
-    <br><br>
+      When I was <strong>nine years old</strong>,
+      I started getting interested in coding.
 
-    When I became eleven, my friend stopped making Roblox games.
-    He's now sixteen, and he stopped making Roblox games.
+      <br><br>
 
-    <br><br>
+      I started with Roblox development because
+      I wanted to make games, but at the time
+      I didn't really know how to code.
 
-    In sixth grade, I started a three-year path of learning coding.
-    Now I make all sorts of websites.
+      <br><br>
 
-    <br><br>
+      When I was <strong>eleven</strong>, my friend
+      stopped making Roblox games. He's now
+      sixteen.
 
-    I love making websites for fun.
+      <br><br>
 
-  </p>
+      In sixth grade, I started a
+      <strong>three-year path learning coding</strong>.
+
+      <br><br>
+
+      Now I make all sorts of websites,
+      and I love making websites for fun.
+
+    </div>
+
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+
+        <span>AGE 9</span>
+
+        <h3>Roblox</h3>
+
+        <p>
+          Started getting interested in
+          Roblox game development.
+        </p>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <span>AGE 11</span>
+
+        <h3>More Inspiration</h3>
+
+        <p>
+          My friend stopped making Roblox games,
+          but my interest in creating things
+          continued.
+        </p>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <span>SIXTH GRADE</span>
+
+        <h3>Learning Coding</h3>
+
+        <p>
+          Started a three-year path of
+          learning coding.
+        </p>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <span>NOW</span>
+
+        <h3>Websites</h3>
+
+        <p>
+          Building all kinds of websites
+          for fun.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
 
 </section>
 
 
-<!-- PROJECTS -->
+<!-- =========================
+     PROJECTS
+========================= -->
+
 <section id="projects" class="section reveal">
 
-  <p class="section-label">02 — PROJECTS</p>
+  <div class="label">
+    02 — PROJECTS
+  </div>
 
-  <h2>My Projects</h2>
+  <h2>
+    Things I Build
+  </h2>
 
-  <div class="cards">
+  <div class="projects">
 
-    <div class="card">
+    <div class="project">
 
-      <div class="card-icon">🌐</div>
+      <div class="project-number">
+        PROJECT 01
+      </div>
+
+      <div class="project-icon">
+        🌐
+      </div>
 
       <h3>Websites</h3>
 
       <p>
-        Creating websites and experimenting with new designs.
+        Custom websites with animations,
+        designs, buttons, and interactive features.
       </p>
 
     </div>
 
 
-    <div class="card">
+    <div class="project">
 
-      <div class="card-icon">🎮</div>
+      <div class="project-number">
+        PROJECT 02
+      </div>
+
+      <div class="project-icon">
+        🎮
+      </div>
 
       <h3>Games</h3>
 
       <p>
-        Inspired by making games since I was nine years old.
+        Game ideas inspired by the Roblox
+        projects that got me interested in coding.
       </p>
 
     </div>
 
 
-    <div class="card">
+    <div class="project">
 
-      <div class="card-icon">💻</div>
+      <div class="project-number">
+        PROJECT 03
+      </div>
 
-      <h3>Coding</h3>
+      <div class="project-icon">
+        💻
+      </div>
+
+      <h3>Experiments</h3>
 
       <p>
-        Learning new coding skills and building new projects.
+        Testing new code and creating random
+        projects just to see what I can build.
       </p>
 
     </div>
@@ -659,28 +1052,324 @@ body.light .weather-button:hover{
 </section>
 
 
-<!-- MUSIC -->
+<!-- =========================
+     YOUTUBE
+========================= -->
+
+<section id="youtube" class="section reveal">
+
+  <div class="label">
+    03 — YOUTUBE
+  </div>
+
+  <h2>
+    My YouTube
+  </h2>
+
+  <div class="youtube">
+
+    <div class="youtube-main">
+
+      <div class="youtube-logo">
+        ▶️
+      </div>
+
+      <h3>
+        Elite Pro Parkour
+      </h3>
+
+      <p>
+        One of my favorite things to watch.
+        Check out Elite Pro Parkour and
+        find some videos to watch.
+      </p>
+
+      <a
+        class="youtube-link"
+        href="https://www.youtube.com/results?search_query=Elite+Pro+Parkour"
+        target="_blank"
+      >
+        Watch Elite Pro Parkour →
+      </a>
+
+    </div>
+
+
+    <div class="youtube-side">
+
+      <h3>
+        Favorite Videos
+      </h3>
+
+      <p>
+        This is my YouTube section where I can
+        keep links to videos and channels I like.
+
+        <br><br>
+
+        Click the button to search YouTube
+        for Elite Pro Parkour.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     BIRTHDAY
+========================= -->
+
+<section id="birthday" class="section reveal">
+
+  <div class="label">
+    04 — BIRTHDAY
+  </div>
+
+  <h2>
+    Birthday Calendar
+  </h2>
+
+  <div class="birthday">
+
+    <div class="calendar">
+
+      <div class="calendar-top">
+
+        <h3>
+          🎉 HAPPY BIRTHDAY 🎂
+        </h3>
+
+      </div>
+
+      <div class="calendar-body">
+
+        <div class="calendar-month">
+
+          <strong>
+            MAY 2026
+          </strong>
+
+          <span>
+            🎈
+          </span>
+
+        </div>
+
+        <div class="calendar-days">
+
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+
+          <div>1</div>
+          <div>2</div>
+
+          <div>3</div>
+          <div>4</div>
+          <div>5</div>
+          <div>6</div>
+          <div>7</div>
+          <div>8</div>
+          <div>9</div>
+
+          <div>10</div>
+
+          <div>11</div>
+
+          <div class="birthday-day">
+            12 🎂
+          </div>
+
+          <div>13</div>
+          <div>14</div>
+          <div>15</div>
+          <div>16</div>
+
+          <div>17</div>
+          <div>18</div>
+          <div>19</div>
+          <div>20</div>
+          <div>21</div>
+          <div>22</div>
+          <div>23</div>
+
+          <div>24</div>
+          <div>25</div>
+          <div>26</div>
+          <div>27</div>
+          <div>28</div>
+          <div>29</div>
+          <div>30</div>
+
+          <div>31</div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="birthday-info">
+
+      <h3>
+        May 12, 2026
+      </h3>
+
+      <p>
+        My birthday is May 12th.
+      </p>
+
+      <div class="age-number">
+        14
+      </div>
+
+      <p>
+        Turning 14 years old 🎈
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     WEATHER
+========================= -->
+
+<section id="weather" class="section reveal">
+
+  <div class="label">
+    05 — WEATHER
+  </div>
+
+  <h2>
+    Current Weather
+  </h2>
+
+  <div class="weather">
+
+    <div class="weather-card">
+
+      <div class="weather-icon" id="weatherIcon">
+        🌤️
+      </div>
+
+      <div class="weather-location" id="weatherLocation">
+        Loading...
+      </div>
+
+      <div class="weather-temp" id="weatherTemp">
+        --°
+      </div>
+
+      <div class="weather-description" id="weatherDescription">
+        Getting weather...
+      </div>
+
+      <div class="weather-details">
+
+        <div class="weather-detail">
+          💨 Wind
+          <br>
+          <strong id="wind">
+            --
+          </strong>
+        </div>
+
+        <div class="weather-detail">
+          🌡️ Temperature
+          <br>
+          <strong id="feels">
+            --
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="weather-side">
+
+      <h3>
+        Weather Info
+      </h3>
+
+      <p>
+        This section automatically gets current
+        weather information.
+
+        <br><br>
+
+        The weather is displayed in Fahrenheit
+        and includes the current temperature,
+        conditions, and wind speed.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     MUSIC
+========================= -->
+
 <section id="music" class="section reveal">
 
-  <p class="section-label">03 — MUSIC</p>
+  <div class="label">
+    06 — MUSIC
+  </div>
 
-  <h2>My Music</h2>
+  <h2>
+    My Music
+  </h2>
 
-  <div class="music-list">
+  <div class="music">
 
-    <button onclick="openMusic('Q50')">
+    <button
+      class="song"
+      onclick="music('Q50')"
+    >
       🎵 Q50
     </button>
 
-    <button onclick="openMusic('Sweater Wetter')">
+    <button
+      class="song"
+      onclick="music('Sweater Wetter')"
+    >
       🎵 Sweater Wetter
     </button>
 
-    <button onclick="openMusic('Gelato Mad 2 Hottie')">
+    <button
+      class="song"
+      onclick="music('Gelato Mad 2 Hottie')"
+    >
       🎵 Gelato
     </button>
 
-    <button onclick="openMusic('Dirty Shoes Harper Woodski')">
+    <button
+      class="song"
+      onclick="music('Dirty Shoes Harper Woodski')"
+    >
       🎵 Dirty Shoes
     </button>
 
@@ -688,177 +1377,126 @@ body.light .weather-button:hover{
 
 </section>
 
-
-<!-- YOUTUBE -->
-<section id="youtube" class="section reveal">
-
-  <p class="section-label">04 — YOUTUBE</p>
-
-  <h2>YouTube</h2>
-
-  <div class="youtube-box">
-
-    <div class="youtube-icon">
-      ▶️
-    </div>
-
-    <h3>Elite Pro Parkour</h3>
-
-    <p>
-      Some of my favorite YouTube videos to watch,
-      including Elite Pro Parkour.
-    </p>
-
-    <a
-      class="youtube-button"
-      href="https://www.youtube.com/results?search_query=Elite+Pro+Parkour"
-      target="_blank"
-    >
-      Watch on YouTube →
-    </a>
-
-  </div>
-
-</section>
-
-
-<!-- BIRTHDAY -->
-<section id="birthday" class="section reveal">
-
-  <p class="section-label">05 — BIRTHDAY</p>
-
-  <h2>My Birthday</h2>
-
-  <div class="birthday-card">
-
-    <div class="birthday-content">
-
-      <h3>🎉 Happy Birthday! 🎂</h3>
-
-      <div class="birthday-date">
-        May 12, 2026
-      </div>
-
-      <div class="age">
-        Turning 14 🎈
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- WEATHER -->
-<section id="weather" class="section reveal">
-
-  <p class="section-label">06 — WEATHER</p>
-
-  <h2>Weather</h2>
-
-  <div class="weather-card">
-
-    <div class="weather-icon" id="weatherIcon">
-      🌤️
-    </div>
-
-    <h3 id="weatherLocation">
-      My Weather
-    </h3>
-
-    <div class="temperature" id="temperature">
-      --°F
-    </div>
-
-    <p id="weatherText">
-      Loading weather...
-    </p>
-
-    <p id="weatherDetails">
-      Temperature information will appear here.
-    </p>
-
-    <button
-      class="weather-button"
-      onclick="getWeather()"
-    >
-      🔄 Refresh Weather
-    </button>
-
-  </div>
-
-</section>
+</main>
 
 
 <footer>
 
-  <h2>JG</h2>
+  <strong>
+    JULIAN GRAHAM
+  </strong>
 
-  <p>
-    © <span id="year"></span> Julian Graham
-  </p>
+  <br><br>
+
+  Coding • Websites • Creativity
+
+  <br><br>
+
+  © <span id="year"></span> Julian Graham
 
 </footer>
 
 
 <script>
 
-/* DARK / LIGHT MODE */
+/* =========================
+   YEAR
+========================= */
 
-const themeButton =
-  document.getElementById("themeButton");
+document.getElementById("year").textContent =
+  new Date().getFullYear();
 
-themeButton.onclick = function(){
 
-  document.body.classList.toggle("light");
+/* =========================
+   RAINBOW CURSOR
+========================= */
 
-  if(document.body.classList.contains("light")){
+const cursor =
+  document.getElementById("cursor");
 
-    themeButton.textContent = "☀️";
+let mouseX = 0;
+let mouseY = 0;
 
-    localStorage.setItem(
-      "theme",
-      "light"
+document.addEventListener(
+  "mousemove",
+  function(e){
+
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    cursor.style.left =
+      mouseX + "px";
+
+    cursor.style.top =
+      mouseY + "px";
+
+    const trail =
+      document.createElement("div");
+
+    trail.className =
+      "cursor-trail";
+
+    trail.style.left =
+      mouseX + "px";
+
+    trail.style.top =
+      mouseY + "px";
+
+    document.body.appendChild(trail);
+
+    setTimeout(
+      () => trail.remove(),
+      600
     );
+
+  }
+);
+
+
+/* =========================
+   DARK / LIGHT
+========================= */
+
+const mode =
+  document.getElementById("mode");
+
+mode.onclick = function(){
+
+  if(
+    document.body.style.background ===
+    "rgb(245, 245, 245)"
+  ){
+
+    document.body.style.background =
+      "#050505";
+
+    document.body.style.color =
+      "#fff";
+
+    mode.textContent =
+      "🌙";
 
   }else{
 
-    themeButton.textContent = "🌙";
+    document.body.style.background =
+      "#f5f5f5";
 
-    localStorage.setItem(
-      "theme",
-      "dark"
-    );
+    document.body.style.color =
+      "#111";
+
+    mode.textContent =
+      "☀️";
 
   }
 
 };
 
 
-if(localStorage.getItem("theme") === "light"){
+/* =========================
+   MUSIC
+========================= */
 
-  document.body.classList.add("light");
-
-  themeButton.textContent = "☀️";
-
-}
-
-
-/* WELCOME BUTTON */
-
-function showMessage(){
-
-  alert(
-    "Welcome to Julian Graham's website! 🚀"
-  );
-
-}
-
-
-/* MUSIC */
-
-function openMusic(song){
+function music(song){
 
   window.open(
     "https://www.youtube.com/results?search_query=" +
@@ -869,212 +1507,190 @@ function openMusic(song){
 }
 
 
-/* SCROLL ANIMATIONS */
+/* =========================
+   SCROLL REVEAL
+========================= */
 
-const sections =
+const reveal =
   document.querySelectorAll(".reveal");
 
+function checkReveal(){
 
-function reveal(){
+  reveal.forEach(
+    section => {
 
-  sections.forEach(section => {
+      const position =
+        section.getBoundingClientRect().top;
 
-    if(
-      section.getBoundingClientRect().top
-      <
-      window.innerHeight - 100
-    ){
+      if(
+        position <
+        window.innerHeight - 100
+      ){
 
-      section.classList.add("visible");
+        section.classList.add("show");
+
+      }
 
     }
-
-  });
+  );
 
 }
 
-
 window.addEventListener(
   "scroll",
-  reveal
+  checkReveal
 );
 
-reveal();
+checkReveal();
 
 
-/* YEAR */
+/* =========================
+   WEATHER
+========================= */
 
-document.getElementById("year").textContent =
-  new Date().getFullYear();
+async function loadWeather(){
 
-
-/* RAINBOW CURSOR */
-
-document.addEventListener(
-  "mousemove",
-  function(e){
-
-    document.documentElement.style.setProperty(
-      "--mouse-x",
-      e.clientX + "px"
-    );
-
-    document.documentElement.style.setProperty(
-      "--mouse-y",
-      e.clientY + "px"
-    );
-
-  }
-);
-
-
-/* WEATHER */
-
-async function getWeather(){
-
-  const location =
-    document.getElementById("weatherLocation");
-
-  const temperature =
-    document.getElementById("temperature");
-
-  const text =
-    document.getElementById("weatherText");
-
-  const details =
-    document.getElementById("weatherDetails");
-
-  const icon =
-    document.getElementById("weatherIcon");
-
-
-  location.textContent =
-    "Loading...";
-
-  text.textContent =
-    "Getting current weather...";
+  const latitude = 35.0527;
+  const longitude = -78.8784;
 
   try{
-
-    /*
-      Default location:
-      Fayetteville, North Carolina
-    */
-
-    const latitude = 35.0527;
-    const longitude = -78.8784;
-
 
     const response =
       await fetch(
         "https://api.open-meteo.com/v1/forecast" +
         "?latitude=" + latitude +
         "&longitude=" + longitude +
-        "&current=temperature_2m,weather_code,wind_speed_10m" +
+        "&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m" +
         "&temperature_unit=fahrenheit" +
         "&wind_speed_unit=mph" +
         "&timezone=auto"
       );
 
-
     const data =
       await response.json();
 
+    const current =
+      data.current;
 
-    const temp =
+    document.getElementById(
+      "weatherLocation"
+    ).textContent =
+      "Fayetteville, North Carolina";
+
+    document.getElementById(
+      "weatherTemp"
+    ).textContent =
       Math.round(
-        data.current.temperature_2m
-      );
+        current.temperature_2m
+      ) + "°F";
 
-    const wind =
+    document.getElementById(
+      "feels"
+    ).textContent =
       Math.round(
-        data.current.wind_speed_10m
-      );
+        current.apparent_temperature
+      ) + "°F";
 
+    document.getElementById(
+      "wind"
+    ).textContent =
+      Math.round(
+        current.wind_speed_10m
+      ) + " mph";
 
-    temperature.textContent =
-      temp + "°F";
-
-    location.textContent =
-      "Fayetteville, NC";
-
-    details.textContent =
-      "Wind: " + wind + " mph";
 
     const code =
-      data.current.weather_code;
+      current.weather_code;
 
 
     if(code === 0){
 
-      icon.textContent = "☀️";
-      text.textContent = "Clear sky";
+      document.getElementById(
+        "weatherIcon"
+      ).textContent = "☀️";
+
+      document.getElementById(
+        "weatherDescription"
+      ).textContent =
+        "Clear sky";
 
     }
 
-    else if(
-      code >= 1 &&
-      code <= 3
-    ){
+    else if(code <= 3){
 
-      icon.textContent = "🌤️";
-      text.textContent = "Partly cloudy";
+      document.getElementById(
+        "weatherIcon"
+      ).textContent = "🌤️";
 
-    }
-
-    else if(
-      code >= 45 &&
-      code <= 48
-    ){
-
-      icon.textContent = "🌫️";
-      text.textContent = "Foggy";
+      document.getElementById(
+        "weatherDescription"
+      ).textContent =
+        "Partly cloudy";
 
     }
 
-    else if(
-      code >= 51 &&
-      code <= 67
-    ){
+    else if(code <= 48){
 
-      icon.textContent = "🌧️";
-      text.textContent = "Rain";
+      document.getElementById(
+        "weatherIcon"
+      ).textContent = "🌫️";
 
-    }
-
-    else if(
-      code >= 71 &&
-      code <= 77
-    ){
-
-      icon.textContent = "❄️";
-      text.textContent = "Snow";
+      document.getElementById(
+        "weatherDescription"
+      ).textContent =
+        "Foggy";
 
     }
 
-    else if(
-      code >= 80 &&
-      code <= 82
-    ){
+    else if(code <= 67){
 
-      icon.textContent = "🌦️";
-      text.textContent = "Rain showers";
+      document.getElementById(
+        "weatherIcon"
+      ).textContent = "🌧️";
+
+      document.getElementById(
+        "weatherDescription"
+      ).textContent =
+        "Rain";
 
     }
 
-    else if(
-      code >= 95
-    ){
+    else if(code <= 77){
 
-      icon.textContent = "⛈️";
-      text.textContent = "Thunderstorm";
+      document.getElementById(
+        "weatherIcon"
+      ).textContent = "❄️";
+
+      document.getElementById(
+        "weatherDescription"
+      ).textContent =
+        "Snow";
+
+    }
+
+    else if(code <= 82){
+
+      document.getElementById(
+        "weatherIcon"
+      ).textContent = "🌦️";
+
+      document.getElementById(
+        "weatherDescription"
+      ).textContent =
+        "Rain showers";
 
     }
 
     else{
 
-      icon.textContent = "🌤️";
-      text.textContent = "Current weather";
+      document.getElementById(
+        "weatherIcon"
+      ).textContent = "⛈️";
+
+      document.getElementById(
+        "weatherDescription"
+      ).textContent =
+        "Thunderstorm";
 
     }
 
@@ -1082,23 +1698,21 @@ async function getWeather(){
 
   catch(error){
 
-    location.textContent =
+    document.getElementById(
+      "weatherLocation"
+    ).textContent =
       "Weather unavailable";
 
-    text.textContent =
-      "Could not load the weather.";
-
-    details.textContent =
-      "Try refreshing the page.";
+    document.getElementById(
+      "weatherDescription"
+    ).textContent =
+      "Could not load weather.";
 
   }
 
 }
 
-
-/* LOAD WEATHER */
-
-getWeather();
+loadWeather();
 
 </script>
 
